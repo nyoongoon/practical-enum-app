@@ -13,6 +13,7 @@ public class Validator {
                 categoryCode.equals("CT000002") ||
                 categoryCode.equals("CT000003") ||
                 categoryCode.equals("CT000004")) {
+
             throw new IllegalArgumentException("잘못된 카테고리입니다");
         }
     }
