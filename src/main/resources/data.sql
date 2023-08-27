@@ -7,22 +7,27 @@ USE
 blog_example;
 
 --
-INSERT INTO post (title, content, created_at, category_code)
-VALUES
-    ('First Post', 'This is the content of the first post.', '2023-08-26 10:00:00', 'CT000001'),
-    ('Second Post', 'Another post with some content.', '2023-08-26 14:30:00', 'CT000002');
+INSERT INTO post (title, content, created_at, category_code, delete_type, expenditure_code, industry_code)
+VALUES ('First Post', 'This is the content of the first post.', '2023-08-26 10:00:00', 'CT000001', 'N', 'CD000002', 'IC000002'),
+       ('Second Post', 'Another post with some content.', '2023-08-26 14:30:00', 'CT000002', 'N', 'CD000001', 'IC000003');
 
 
 INSERT INTO comment (post_id, content, created_at)
-VALUES
-    (1, 'Great post! Thanks for sharing.', '2023-08-26 10:30:00'),
-    (1, 'I found this really helpful.', '2023-08-26 11:00:00'),
-    (2, 'Interesting thoughts in this post.', '2023-08-26 15:00:00');
+VALUES (1, 'Great post! Thanks for sharing.', '2023-08-26 10:30:00'),
+       (1, 'I found this really helpful.', '2023-08-26 11:00:00'),
+       (2, 'Interesting thoughts in this post.', '2023-08-26 15:00:00');
 
 
 -- 예시 공통 코드 값 삽입
 INSERT INTO common_code (code, description)
 VALUES ('CT000001', 'Category A'),
        ('CT000002', 'Category B'),
-       ('CT000003', 'Category C');
+       ('CT000003', 'Category C'),
+       ('CT000004', 'Category D'),
+       ('CD000001', 'FOOD'),
+       ('CD000002', 'TRANSPORTATION'),
+       ('CD000003', 'HOUSING'),
+       ('IC000001', 'TECHNOLOGY'),
+       ('IC000002', 'FINANCE'),
+       ('IC000003', 'HEALTHCARE');
 
