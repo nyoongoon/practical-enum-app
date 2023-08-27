@@ -1,5 +1,6 @@
 package goal.in.next.demo.entity;
 
+import goal.in.next.demo.constant.DeleteType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +33,9 @@ public class Post {
     @Column(name = "category_code")
     private String categoryCode;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "delete_type")
-    private String deleteType;
+    private DeleteType deleteType;
 
     @Column(name = "expenditure_code")
     private String expenditureCode;
@@ -45,7 +47,7 @@ public class Post {
     private List<Comment> commentsList;
 
     public void deletePost(){
-        this.deleteType = "Y";
+        this.deleteType = DeleteType.Y;
     }
 
     public void updateIndustryCode(String code){

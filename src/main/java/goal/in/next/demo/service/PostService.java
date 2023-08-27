@@ -37,7 +37,7 @@ public class PostService {
         postRepository.save(post);
     }
 
-
+    @Transactional
     public void deletePost(long id) {
         Post foundPost = postRepository.findById(id).orElseThrow();
         foundPost.deletePost();
