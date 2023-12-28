@@ -13,7 +13,10 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumns({
+            @JoinColumn(name = "post_id"),
+            @JoinColumn(name = "some_code")
+    })
     private Post post;
 
     @Column(columnDefinition = "TEXT")

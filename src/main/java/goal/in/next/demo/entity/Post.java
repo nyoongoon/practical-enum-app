@@ -1,6 +1,6 @@
 package goal.in.next.demo.entity;
 
-import goal.in.next.demo.constant.DeleteType;
+import goal.in.next.demo.constant.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +12,26 @@ import java.util.List;
 
 @Entity
 @Table(name = "post")
-@Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@IdClass(PostId.class)
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
+    @Id
+//    @Enumerated(EnumType.STRING)
+    @Column(name="some_code")
+    private SomeCode someCode;
+
+//    @Enumerated(EnumType.STRING)
+    @Column(name = "category_code")
+    private CategoryCode categoryCode;
+
+    @Column(name="title")
     private String title;
 
     @Column(name="content")
@@ -30,27 +40,47 @@ public class Post {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "category_code")
-    private String categoryCode;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "delete_type")
     private DeleteType deleteType;
 
     @Column(name = "expenditure_code")
-    private String expenditureCode;
+    private ExpenditureCode expenditureCode;
 
     @Column(name = "industry_code")
-    private String industryCode;
+    private IndustryCode industryCode;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> commentsList;
+
+
+    @Builder
+    public Post(
+            Long id,
+            SomeCode someCode,
+            String title,
+            String content,
+            LocalDateTime createdAt,
+            CategoryCode categoryCode,
+            DeleteType deleteType,
+            ExpenditureCode expenditureCode,
+            IndustryCode industryCode) {
+        this.id = id;
+        this.someCode = someCode;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.categoryCode = categoryCode;
+        this.deleteType = deleteType;
+        this.expenditureCode = expenditureCode;
+        this.industryCode = industryCode;
+    }
 
     public void deletePost(){
         this.deleteType = DeleteType.Y;
     }
 
-    public void updateIndustryCode(String code){
+    public void updateIndustryCode(IndustryCode code){
         this.industryCode = code;
     }
 }
