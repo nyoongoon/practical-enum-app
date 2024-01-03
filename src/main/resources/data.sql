@@ -7,6 +7,9 @@ USE blog_example;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS common_code;
+DROP TABLE IF EXISTS child;
+DROP TABLE IF EXISTS parent;
+
 
 # CREATE TABLE common_code (
 #                              code VARCHAR(255) PRIMARY KEY,
@@ -32,6 +35,20 @@ CREATE TABLE comment (
                          post_id INT NOT NULL,
                          content TEXT,
                          created_at DATETIME
+);
+
+-- Parent 테이블 생성
+CREATE TABLE parent (
+                        id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                        name VARCHAR(255)
+);
+
+-- Child 테이블 생성
+CREATE TABLE child (
+                       id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                       description VARCHAR(255),
+                       parent_id BIGINT,
+                       FOREIGN KEY (parent_id) REFERENCES parent(id)
 );
 
 -- 예시 공통 코드 값 삽입

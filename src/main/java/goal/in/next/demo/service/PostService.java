@@ -4,8 +4,10 @@ import goal.in.next.demo.constant.ExpenditureCode;
 import goal.in.next.demo.constant.IndustryCode;
 import goal.in.next.demo.constant.SomeCode;
 import goal.in.next.demo.dto.PostForm;
+import goal.in.next.demo.entity.Comment;
 import goal.in.next.demo.entity.Post;
 import goal.in.next.demo.entity.PostId;
+import goal.in.next.demo.repository.CommentRepository;
 import goal.in.next.demo.repository.PostRepository;
 import goal.in.next.demo.utils.EnumUtils;
 import goal.in.next.demo.validate.Validator;
@@ -19,6 +21,7 @@ public class PostService {
 
     private final Validator validator;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public void insertPost(PostForm postForm) {
@@ -26,7 +29,11 @@ public class PostService {
 
         Post post = postForm.toEntity();
 
-        postRepository.save(post);
+        Post save = postRepository.save(post);
+        Comment comment = new Comment(save, "test");
+        commentRepository.save(comment);
+
+        System.out.println("inserted!");
 
 //        Post savedPost = postRepository.save(post);
 
