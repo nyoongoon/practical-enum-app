@@ -4,6 +4,7 @@ import goal.in.next.demo.constant.SomeCode;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "post_history")
 @IdClass(PostHistoryId.class)
 @NoArgsConstructor
+@ToString(exclude = "post")
 public class PostHistory {
 
     @Id
@@ -25,7 +27,6 @@ public class PostHistory {
     @Id
     @Column(name="some_code")
     private SomeCode someCode;
-
 
     @ManyToOne
     @JoinColumns({

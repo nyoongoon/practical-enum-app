@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @IdClass(PostId.class)
+@ToString(exclude = "postHistoryList")
 public class Post {
 
     @Id
@@ -50,7 +52,7 @@ public class Post {
     private IndustryCode industryCode;
 
     @OneToMany(mappedBy = "post")
-    private List<PostHistory> commentsList;
+    private List<PostHistory> postHistoryList;
 
 
     @Builder
