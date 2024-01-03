@@ -16,7 +16,6 @@ public record PostForm(
         String content,
 
         CategoryCode categoryCode
-
 ) {
 
     public Post toEntity(){

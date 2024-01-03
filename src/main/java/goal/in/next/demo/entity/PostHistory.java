@@ -2,23 +2,25 @@ package goal.in.next.demo.entity;
 
 import goal.in.next.demo.constant.SomeCode;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comment")
-@IdClass(CommentId.class)
+@Table(name = "post_history")
+@IdClass(PostHistoryId.class)
 @NoArgsConstructor
-public class Comment {
+public class PostHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="post_history_no")
+    private Long postHistoryNo;
 
     @Id
-    @Column(name="post_id")
-    private Long postId;
+    @Column(name="post_no")
+    private Long postNo;
 
     @Id
     @Column(name="some_code")
@@ -27,7 +29,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "post_id"),
+            @JoinColumn(name = "post_no"),
             @JoinColumn(name = "some_code")
     })
     private Post post;
@@ -41,8 +43,16 @@ public class Comment {
 
     // Constructors, getters, setters, and other methods
 
-    public Comment(Post post, String content) {
-        this.post = post;
+    @Builder
+    public PostHistory(Long postHistoryNo,
+                       Long postNo,
+                       SomeCode someCode,
+                       String content,
+                       LocalDateTime createdAt) {
+        this.postHistoryNo = postHistoryNo;
+        this.postNo = postNo;
+        this.someCode = someCode;
         this.content = content;
+        this.createdAt = createdAt;
     }
 }

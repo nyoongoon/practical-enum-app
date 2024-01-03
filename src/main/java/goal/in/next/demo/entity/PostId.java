@@ -17,8 +17,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostId implements Serializable {
-    @Column(name="id")
-    private Long id;
+    @Column(name="post_no")
+    private Long postNo;
 
     @Column(name="some_code")
     private SomeCode someCode;

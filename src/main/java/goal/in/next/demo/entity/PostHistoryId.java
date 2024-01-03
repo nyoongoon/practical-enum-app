@@ -11,11 +11,12 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentId implements Serializable {
-    private Long id;
+public class PostHistoryId implements Serializable {
+    @Column(name="post_history_no")
+    private Long postHistoryNo;
 
-    @Column(name="post_id")
-    private Long postId;
+    @Column(name="post_no")
+    private Long postNo;
 
     @Column(name="some_code")
     private SomeCode someCode;

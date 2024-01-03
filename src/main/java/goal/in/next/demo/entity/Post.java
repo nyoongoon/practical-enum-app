@@ -2,7 +2,6 @@ package goal.in.next.demo.entity;
 
 import goal.in.next.demo.constant.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +18,8 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="post_no")
+    private Long postNo;
 
     @Id
 //    @Enumerated(EnumType.STRING)
@@ -51,12 +50,12 @@ public class Post {
     private IndustryCode industryCode;
 
     @OneToMany(mappedBy = "post")
-    private List<Comment> commentsList;
+    private List<PostHistory> commentsList;
 
 
     @Builder
     public Post(
-            Long id,
+            Long postNo,
             SomeCode someCode,
             String title,
             String content,
@@ -65,7 +64,7 @@ public class Post {
             DeleteType deleteType,
             ExpenditureCode expenditureCode,
             IndustryCode industryCode) {
-        this.id = id;
+        this.postNo = postNo;
         this.someCode = someCode;
         this.title = title;
         this.content = content;
