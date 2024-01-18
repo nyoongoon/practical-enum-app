@@ -9,8 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "parent")
-@Setter
 @Getter
+@Setter
 public class Parent {
 
     @Id
@@ -19,8 +19,6 @@ public class Parent {
 
     private String name;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Child> children = new ArrayList<>();
-
-    // Constructors, getters, setters, and other methods
+//    @OneToMany(mappedBy = "parent")
+//    private List<Child> children = new ArrayList<>();
 }

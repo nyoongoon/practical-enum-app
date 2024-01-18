@@ -12,6 +12,6 @@ public class ParentController {
 
     @PostMapping("/text")
     public void insertPost() {
-        parentService.insertParent();
+        parentService.example();
     }
 }

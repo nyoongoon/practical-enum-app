@@ -1,8 +1,6 @@
 package goal.in.next.demo.entity;
 
-import goal.in.next.demo.constant.SomeCode;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -17,23 +15,16 @@ public class PostHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="post_history_no")
+    @Column(name = "post_history_no")
     private Long postHistoryNo;
 
     @Id
-    @Column(name="post_no")
+    @Column(name = "post_no")
     private Long postNo;
 
-    @Id
-    @Column(name="some_code")
-    private SomeCode someCode;
-
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "post_no"),
-            @JoinColumn(name = "some_code")
-    })
-    private Post post;
+//    @Id
+//    @Column(name="some_code")
+//    private SomeCode someCode;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -42,18 +33,38 @@ public class PostHistory {
     private LocalDateTime createdAt;
 
 
-    // Constructors, getters, setters, and other methods
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "post_no", insertable = false, updatable = false)
+    @JoinColumn(name = "post_no")
+    private Post post;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumns({
+//            @JoinColumn(name = "post_no", insertable = false, updatable = false),
+//            @JoinColumn(name = "some_code", insertable = false, updatable = false)
+//    })
+//    private Post post;
 
-    @Builder
-    public PostHistory(Long postHistoryNo,
-                       Long postNo,
-                       SomeCode someCode,
-                       String content,
-                       LocalDateTime createdAt) {
-        this.postHistoryNo = postHistoryNo;
+
+    public PostHistory(Long postNo, String content) {
         this.postNo = postNo;
-        this.someCode = someCode;
         this.content = content;
-        this.createdAt = createdAt;
     }
+//    public PostHistory(Long postNo, SomeCode someCode, String content) {
+//        this.postNo = postNo;
+//        this.someCode = someCode;
+//        this.content = content;
+//    }
+
+//    @Builder
+//    public PostHistory(Long postHistoryNo,
+//                       Long postNo,
+//                       SomeCode someCode,
+//                       String content,
+//                       LocalDateTime createdAt) {
+//        this.postHistoryNo = postHistoryNo;
+//        this.postNo = postNo;
+//        this.someCode = someCode;
+//        this.content = content;
+//        this.createdAt = createdAt;
+//    }
 }

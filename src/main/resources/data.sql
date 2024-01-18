@@ -4,6 +4,8 @@ CREATE DATABASE IF NOT EXISTS blog_example;
 -- 사용할 데이터베이스 선택
 USE blog_example;
 
+DROP TABLE IF EXISTS employee_detail;
+DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS post_history;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS common_code;
@@ -11,48 +13,92 @@ DROP TABLE IF EXISTS child;
 DROP TABLE IF EXISTS parent;
 
 
-# CREATE TABLE common_code (
-#                              code VARCHAR(255) PRIMARY KEY,
-#                              description VARCHAR(255) NOT NULL
-# );
-
-CREATE TABLE post (
-                      post_no INT AUTO_INCREMENT,
-                      some_code VARCHAR(255),
-                      title VARCHAR(255),
-                      content TEXT,
-                      created_at DATETIME,
-                      category_code VARCHAR(255),
-                      delete_type CHAR(1),
-                      expenditure_code VARCHAR(255),
-                      industry_code VARCHAR(255),
-                      PRIMARY KEY (post_no, some_code)
+CREATE TABLE common_code
+(
+    code        VARCHAR(255) PRIMARY KEY,
+    description VARCHAR(255) NOT NULL
 );
 
-
-CREATE TABLE post_history (
-                         post_history_no INT AUTO_INCREMENT,
-                         post_no INT NOT NULL,
-                         some_code VARCHAR(255),
-                         content TEXT,
-                         created_at DATETIME,
-                         PRIMARY KEY (post_history_no, post_no, some_code),
-                         FOREIGN KEY (post_no, some_code) REFERENCES post(post_no, some_code)
+CREATE TABLE employee
+(
+    nick_name VARCHAR(10),
+    name      VARCHAR(10),
+    PRIMARY KEY (nick_name, name)
 );
 
+CREATE TABLE employee_detail
+(
+    employee_detail_seq INT AUTO_INCREMENT,
+    nick_name           VARCHAR(10),
+    name                VARCHAR(10),
+    content             VARCHAR(255),
+    PRIMARY KEY (employee_detail_seq, nick_name, name),
+    FOREIGN KEY (nick_name, name) REFERENCES employee (nick_name, name)
+);
+
+CREATE TABLE post
+(
+    post_no          BIGINT,
+    title            VARCHAR(255),
+    content          TEXT,
+    created_at       DATETIME,
+    category_code    VARCHAR(255),
+    delete_type      CHAR(1),
+    expenditure_code VARCHAR(255),
+    industry_code    VARCHAR(255),
+    PRIMARY KEY (post_no)
+);
 -- Parent 테이블 생성
-CREATE TABLE parent (
-                        id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                        name VARCHAR(255)
+
+CREATE TABLE parent
+(
+    id   BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255)
 );
 
 -- Child 테이블 생성
-CREATE TABLE child (
-                       id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                       description VARCHAR(255),
-                       parent_id BIGINT,
-                       FOREIGN KEY (parent_id) REFERENCES parent(id)
+
+CREATE TABLE child
+(
+    id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+    parent_id BIGINT,
+    FOREIGN KEY (parent_id) REFERENCES parent (id)
 );
+
+
+# CREATE TABLE post (
+#                       post_no BIGINT,
+#                       some_code VARCHAR(255),
+#                       title VARCHAR(255),
+#                       content TEXT,
+#                       created_at DATETIME,
+#                       category_code VARCHAR(255),
+#                       delete_type CHAR(1),
+#                       expenditure_code VARCHAR(255),
+#                       industry_code VARCHAR(255),
+#                       PRIMARY KEY (post_no, some_code)
+# );
+
+CREATE TABLE post_history
+(
+    post_history_no BIGINT AUTO_INCREMENT,
+    post_no         BIGINT NOT NULL,
+    content         TEXT,
+    created_at      DATETIME,
+    PRIMARY KEY (post_history_no, post_no),
+    FOREIGN KEY (post_no) REFERENCES post (post_no)
+);
+
+# CREATE TABLE post_history (
+#                          post_history_no BIGINT AUTO_INCREMENT,
+#                          post_no BIGINT NOT NULL,
+#                          some_code VARCHAR(255),
+#                          content TEXT,
+#                          created_at DATETIME,
+#                          PRIMARY KEY (post_history_no, post_no, some_code),
+#                          FOREIGN KEY (post_no, some_code) REFERENCES post(post_no, some_code)
+# );
+
 
 -- 예시 공통 코드 값 삽입
 # INSERT INTO common_code (code, description)
@@ -83,3 +129,9 @@ CREATE TABLE child (
 #     (1, 'Great post! Thanks for sharing.', '2023-08-26 10:30:00'),
 #     (1, 'I found this really helpful.', '2023-08-26 11:00:00'),
 #     (2, 'Interesting thoughts in this post.', '2023-08-26 15:00:00');
+
+# select c1_0.id, p1_0.id, p1_0.name
+# from child c1_0
+#          left join parent p1_0 on p1_0.id = c1_0.parent_id
+# where c1_0.id = ?
+

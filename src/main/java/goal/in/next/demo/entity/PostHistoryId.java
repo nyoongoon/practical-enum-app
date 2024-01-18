@@ -17,7 +17,7 @@ public class PostHistoryId implements Serializable {
 
     @Column(name="post_no")
     private Long postNo;
-
-    @Column(name="some_code")
-    private SomeCode someCode;
+//
+//    @Column(name="some_code")
+//    private SomeCode someCode;
 }

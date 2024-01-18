@@ -18,15 +18,15 @@ public record PostForm(
         CategoryCode categoryCode
 ) {
 
-    public Post toEntity(){
-        return Post.builder()
-                .someCode(someCode)
-                .title(title)
-                .content(content)
-                .createdAt(LocalDateTime.now())
-                .categoryCode(categoryCode)
-                .deleteType(DeleteType.N)
-                .build();
-    }
+//    public Post toEntity(){
+//        return Post.builder()
+//                .someCode(someCode)
+//                .title(title)
+//                .content(content)
+//                .createdAt(LocalDateTime.now())
+//                .categoryCode(categoryCode)
+//                .deleteType(DeleteType.N)
+//                .build();
+//    }
 
 }

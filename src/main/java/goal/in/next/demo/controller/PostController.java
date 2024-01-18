@@ -13,7 +13,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/user")
-    public void insertPost(@RequestBody PostForm postForm) {
-        postService.insertPost(postForm);
+    public void insertPost() {
+        postService.insertPost();
     }
 }

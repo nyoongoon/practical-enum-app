@@ -1,8 +1,10 @@
 package goal.in.next.demo.entity;
 
-import goal.in.next.demo.constant.*;
+import goal.in.next.demo.constant.CategoryCode;
+import goal.in.next.demo.constant.DeleteType;
+import goal.in.next.demo.constant.ExpenditureCode;
+import goal.in.next.demo.constant.IndustryCode;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,28 +16,28 @@ import java.util.List;
 @Table(name = "post")
 @Getter
 @NoArgsConstructor
-@IdClass(PostId.class)
+//@IdClass(PostId.class)
 @ToString(exclude = "postHistoryList")
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="post_no")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_no")
     private Long postNo;
 
-    @Id
-//    @Enumerated(EnumType.STRING)
-    @Column(name="some_code")
-    private SomeCode someCode;
+//    @Id
+////    @Enumerated(EnumType.STRING)
+//    @Column(name = "some_code")
+//    private SomeCode someCode;
 
-//    @Enumerated(EnumType.STRING)
+    //    @Enumerated(EnumType.STRING)
     @Column(name = "category_code")
     private CategoryCode categoryCode;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="content")
+    @Column(name = "content")
     private String content;
 
     @Column(name = "created_at")
@@ -51,37 +53,47 @@ public class Post {
     @Column(name = "industry_code")
     private IndustryCode industryCode;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<PostHistory> postHistoryList;
 
-
-    @Builder
-    public Post(
-            Long postNo,
-            SomeCode someCode,
-            String title,
-            String content,
-            LocalDateTime createdAt,
-            CategoryCode categoryCode,
-            DeleteType deleteType,
-            ExpenditureCode expenditureCode,
-            IndustryCode industryCode) {
+    public Post(Long postNo, String title) {
         this.postNo = postNo;
-        this.someCode = someCode;
         this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.categoryCode = categoryCode;
-        this.deleteType = deleteType;
-        this.expenditureCode = expenditureCode;
-        this.industryCode = industryCode;
     }
 
-    public void deletePost(){
+//    public Post(Long postNo, SomeCode someCode, String title) {
+//        this.postNo = postNo;
+//        this.someCode = someCode;
+//        this.title = title;
+//    }
+
+//    @Builder
+//    public Post(
+//            Long postNo,
+//            SomeCode someCode,
+//            String title,
+//            String content,
+//            LocalDateTime createdAt,
+//            CategoryCode categoryCode,
+//            DeleteType deleteType,
+//            ExpenditureCode expenditureCode,
+//            IndustryCode industryCode) {
+//        this.postNo = postNo;
+//        this.someCode = someCode;
+//        this.title = title;
+//        this.content = content;
+//        this.createdAt = createdAt;
+//        this.categoryCode = categoryCode;
+//        this.deleteType = deleteType;
+//        this.expenditureCode = expenditureCode;
+//        this.industryCode = industryCode;
+//    }
+
+    public void deletePost() {
         this.deleteType = DeleteType.Y;
     }
 
-    public void updateIndustryCode(IndustryCode code){
+    public void updateIndustryCode(IndustryCode code) {
         this.industryCode = code;
     }
 }

@@ -6,19 +6,16 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "child")
-@Setter
 @Getter
+@Setter
 public class Child {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
+//    @JoinColumn(name = "parent_id", insertable = false, updatable = false)
     private Parent parent;
 
-    // Constructors, getters, setters, and other methods
 }
