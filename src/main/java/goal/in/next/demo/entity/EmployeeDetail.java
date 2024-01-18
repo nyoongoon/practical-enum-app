@@ -2,16 +2,18 @@ package goal.in.next.demo.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "employee_detail")
 @NoArgsConstructor
 @IdClass(EmployeeDetailId.class)
 public class EmployeeDetail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_detail_seq")
     private Long employeeDetailSeq;
 

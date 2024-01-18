@@ -40,4 +40,10 @@ public class EmployeeService {
         size = foundByQuerydsl.getEmployeeDetailList().size();
         System.out.println(size);
     }
+
+    public void selectEmployee(){
+        Employee found = employeeRepository.findById(new EmployeeId("쁘디홍", "홍길동")).orElseThrow();
+        List<EmployeeDetail> employeeDetailList = found.getEmployeeDetailList();
+        System.out.println(employeeDetailList.get(0).getName());
+    }
 }
