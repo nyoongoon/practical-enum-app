@@ -4,9 +4,11 @@ package goal.in.next.demo.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "employee_detail")
 @NoArgsConstructor
 @IdClass(EmployeeDetailId.class)

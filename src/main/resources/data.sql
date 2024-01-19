@@ -36,6 +36,8 @@ CREATE TABLE employee_detail
     FOREIGN KEY (nick_name, name) REFERENCES employee (nick_name, name)
 );
 
+insert into employee (name, nick_name) values ('홍갈동','쁘디홍');
+
 CREATE TABLE post
 (
     post_no          BIGINT,
