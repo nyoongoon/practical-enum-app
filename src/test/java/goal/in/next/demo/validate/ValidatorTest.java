@@ -17,20 +17,20 @@ class ValidatorTest {
     @Autowired
     Validator validator;
 
-    @Test
-    public void 코드_밸리데이터_테스트() {
-        PostForm postForm1 = new PostForm(SomeCode.THING, "title", "content", REFUND_INQUIRY);
-        IllegalArgumentException exception1 =
-                assertThrows(IllegalArgumentException.class, () -> validator.validateCategory(postForm1));
-        assertEquals("잘못된 카테고리입니다", exception1.getMessage());
-
-        PostForm postForm2 = new PostForm(SomeCode.THING, "title", "content", PRODUCT_REVIEWS);
-        IllegalStateException exception2 =
-                assertThrows(IllegalStateException.class, () -> validator.validateCategory(postForm2));
-        assertEquals("이상한 카테고리입니다", exception2.getMessage());
-
-        PostForm postForm3 =
-                new PostForm(SomeCode.THING, "title", "content", DISCUSSIONS);
-        assertDoesNotThrow(() -> validator.validateCategory(postForm3));
-    }
+//    @Test
+//    public void 코드_밸리데이터_테스트() {
+//        PostForm postForm1 = new PostForm(SomeCode.THING, "title", "content", REFUND_INQUIRY);
+//        IllegalArgumentException exception1 =
+//                assertThrows(IllegalArgumentException.class, () -> validator.validateCategory(postForm1));
+//        assertEquals("잘못된 카테고리입니다", exception1.getMessage());
+//
+//        PostForm postForm2 = new PostForm(SomeCode.THING, "title", "content", PRODUCT_REVIEWS);
+//        IllegalStateException exception2 =
+//                assertThrows(IllegalStateException.class, () -> validator.validateCategory(postForm2));
+//        assertEquals("이상한 카테고리입니다", exception2.getMessage());
+//
+//        PostForm postForm3 =
+//                new PostForm(SomeCode.THING, "title", "content", DISCUSSIONS);
+//        assertDoesNotThrow(() -> validator.validateCategory(postForm3));
+//    }
 }

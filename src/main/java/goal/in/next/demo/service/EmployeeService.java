@@ -22,15 +22,15 @@ public class EmployeeService {
 
     @Transactional
     public void postEmployee(EmployeeDto employeeDto) {
-//        Employee saved = employeeRepository.save(new Employee(employeeDto.getNickName(), employeeDto.getName()));
+        Employee saved = employeeRepository.save(new Employee(employeeDto.getNickName(), employeeDto.getName()));
 
 //        // 연관관계는 일단 아직 모르겠고 해당되는 칼럼에 insert 한다..
-//        employeeDetailRepository.save(new EmployeeDetail(saved.getNickName(), saved.getName())); // success !
-//
+        EmployeeDetail save = employeeDetailRepository.save(new EmployeeDetail(saved.getNickName(), saved.getName()));// success !
+
 //        // 하지만 논리적으로는 연관관계가 설정된 것이 맞지 않을까? JPA가 무엇인가를 해주지 않았을까..?
-//        int size = saved.getEmployeeDetailList().size();// select문 안나감 !
-//        System.out.println(size);
-//
+        int size = saved.getEmployeeDetailList().size();// select문 안나감 !
+        System.out.println(size);
+
 //        Employee found = employeeRepository.findById(new EmployeeId(saved.getNickName(), saved.getName())).orElseThrow();
 //        size = found.getEmployeeDetailList().size(); // select문 안나감 !
 //        System.out.println(size);
@@ -54,4 +54,6 @@ public class EmployeeService {
         Employee foundByQuerydsl = employeeQueryRepository.findById("쁘디홍", "홍길동").orElseThrow();
         System.out.println("end...");
     }
+
+
 }

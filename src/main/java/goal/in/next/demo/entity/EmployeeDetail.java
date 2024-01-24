@@ -15,7 +15,7 @@ import lombok.Setter;
 public class EmployeeDetail {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_detail_seq")
     private Long employeeDetailSeq;
 

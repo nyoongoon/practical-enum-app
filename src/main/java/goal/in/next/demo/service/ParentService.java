@@ -5,10 +5,12 @@ import goal.in.next.demo.entity.Parent;
 import goal.in.next.demo.repository.ChildRepository;
 import goal.in.next.demo.repository.ParentRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -55,6 +57,18 @@ public class ParentService {
 
     @Transactional
     public void example(){
+
+//        Integer.parseInt();
+        StringUtils stringUtils = new StringUtils();
+        AbsUtils.toUpperCase("Abc");
+
+        AbsUitilsChild absUitilsChild = new AbsUitilsChild();
+        absUitilsChild.toLowerCase("abc");
+        absUitilsChild.toInteger("abc");
+        absUitilsChild.toCharacter("abc");
+
+
+
         Parent parent = new Parent();
         parentRepository.save(parent);
 
