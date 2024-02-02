@@ -2,9 +2,11 @@ package goal.in.next.demo.service;
 
 import goal.in.next.demo.entity.Child;
 import goal.in.next.demo.entity.Parent;
-import goal.in.next.demo.oop_example.abtracts.Mammal;
-import goal.in.next.demo.oop_example.clazz.Dog;
-import goal.in.next.demo.oop_example.interfaces.Eating;
+import goal.in.next.demo.oop_example._1_interfaces.Diving;
+import goal.in.next.demo.oop_example._2_abtracts.Mammal;
+import goal.in.next.demo.oop_example._3_clazz.Dog;
+import goal.in.next.demo.oop_example._1_interfaces.Eating;
+import goal.in.next.demo.oop_example._3_clazz.GoldenFish;
 import goal.in.next.demo.repository.ChildRepository;
 import goal.in.next.demo.repository.ParentRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,14 +60,21 @@ public class ParentService {
 
     @Transactional
     public void example(){
-        Eating actOfEatingByDog = new Dog(); //먹는 행위 중 개의 행위에 주목
+        GoldenFish myGoldenFish = new GoldenFish(false);
+        Dog myDog = new Dog("brown");
+        Dog yourDog = new Dog("white");
+
+
+
+
+        Eating actOfEatingByDog = new Dog("black"); //먹는 행위 중 개의 행위에 주목
         actOfEatingByDog.bite();
         actOfEatingByDog.digest();
-        Mammal amongMamalsDog = new Dog(); //포유류 중 개를 주목
+        Mammal amongMamalsDog = new Dog("yellow"); //포유류 중 개를 주목
         amongMamalsDog.bark();
         //.. impl method 사용 가능
-        Dog dog = new Dog(); //그냥 개
-//        dog.
+        Dog dog = new Dog("blue"); //그냥 개
+        dog.
 
 
 

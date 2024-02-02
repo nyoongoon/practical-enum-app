@@ -1,8 +1,14 @@
-package goal.in.next.demo.oop_example.clazz;
+package goal.in.next.demo.oop_example._3_clazz;
 
-import goal.in.next.demo.oop_example.abtracts.Mammal;
+import goal.in.next.demo.oop_example._2_abtracts.Mammal;
 
 public class Dog extends Mammal {
+    String color;
+
+    public Dog(String color) {
+        this.color = color;
+    }
+
     @Override
     public void bark() {
         System.out.println("멍멍");
