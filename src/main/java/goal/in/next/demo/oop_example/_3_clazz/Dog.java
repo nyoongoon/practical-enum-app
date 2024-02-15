@@ -3,7 +3,7 @@ package goal.in.next.demo.oop_example._3_clazz;
 import goal.in.next.demo.oop_example._2_abtracts.Mammal;
 
 public class Dog extends Mammal {
-    String color;
+    public String color;
 
     public Dog(String color) {
         this.color = color;

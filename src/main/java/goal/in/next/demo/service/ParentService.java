@@ -70,17 +70,28 @@ public class ParentService {
         Eating actOfEatingByDog = new Dog("black"); //먹는 행위 중 개의 행위에 주목
         actOfEatingByDog.bite();
         actOfEatingByDog.digest();
+//        actOfEatingByDog.bark(); 호출 불가능 -> 먹는 행위의 관점에서 짖는 것은 모른다..
+//        actOfEatingByDog.color; 무슨 색인지 모름.. -> 상태를 갖을 수 없음
         Mammal amongMamalsDog = new Dog("yellow"); //포유류 중 개를 주목
-        amongMamalsDog.bark();
-        //.. impl method 사용 가능
-        Dog dog = new Dog("blue"); //그냥 개
-        dog.
+        actOfEatingByDog.bite(); // 먹고
+        amongMamalsDog.respire(); // 숨쉬고
+        amongMamalsDog.bark(); //짖고
+//        amongMamalsDog.color; // 그러나 무슨 색인지는 몰라.. -> 상태를 갖을 수 없음
+        Dog badook = new Dog("blue"); //우리 바둑이
+        badook.bite(); //먹고
+        badook.respire(); //숨쉬고
+        badook.bark(); //짖고
+        String colorOfBabook = badook.color; //바둑이는 색깔도 뭔지 알아..
 
 
 
 
 
 
+
+
+        String a = "abc";
+        StringUtils.leftPad();
 
 
         String upper = AbsUitilsChild.toUpperCase("upper");
