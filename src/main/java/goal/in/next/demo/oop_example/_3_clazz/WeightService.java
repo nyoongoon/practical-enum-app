@@ -1,12 +1,13 @@
 package goal.in.next.demo.oop_example._3_clazz;
 
-public final class Gravity { //중력을 무엇으로 상속할까... 추상화, 상속, 다형성 불가.. !
-    // 중력 상수 - 중력의 성질을 나타내지만, 어떤 대상의 순간적인 상태 나타내는 것이 아님!
-    static final double GRAVITY_CONSTANT = 9.8; // 상수만 있을 뿐, 상태 없음!
-    // 대상의 무게 구하기
-    static double getWeight(Object object){
-        return object.mess * GRAVITY_CONSTANT;
-    }
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class WeightService {
+    public final Scale scale; //의존성주입
 
     class Apple {
         double mess = 0.5;
@@ -15,37 +16,38 @@ public final class Gravity { //중력을 무엇으로 상속할까... 추상화,
         double mess = 0.3;
     }
 
-
-    public void main(String[] args) {
-
+    public void getHeavierObjectByGravity(){
         Object apple = new Apple();
         Object banana = new Banana();
         Object heavierObject;
-
         // 사과와 바나나의 무게가 같지 않을 때
         // 절차지향의 세계
-        double weight1 = Gravity.getWeight(apple); //소스코드 자체에 대한 수정이 필요
+        // 입력
+        double weight1 = Gravity.getWeight(apple);
         double weight2 = Gravity.getWeight(banana);
         double heavierWeight;
-
+        // 처리
         if(weight1 > weight2){
             heavierWeight = weight1;
         }else{
             heavierWeight = weight2;
         }
-
+        // 출력
         if(Gravity.getWeight(apple) == heavierWeight){
             heavierObject = apple;
         }else{
             heavierObject = banana;
         }
         System.out.println(heavierObject + "가 더 무거움");
+    }
 
+    public void getHeavierObjectByScale(){
+        Object apple = new Apple();
+        Object banana = new Banana();
 
         // 객체지향의 세계
-        BalanceScale balanceScale = new BalanceScale();
-        balanceScale.putObjectsOnScale(apple, banana);
-        heavierObject = balanceScale.getObjectOnScaleDown();
+        scale.putObjectsOnScale(apple, banana); // 저울에 물체를 올려둔다.
+        Object heavierObject = scale.getObjectOnScaleDown(); // 더 무거워서 내려간 쪽의 물체 가져오기
         System.out.println(heavierObject + "가 더 무거움");
     }
 }
