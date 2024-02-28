@@ -10,7 +10,6 @@ public class BeanConfig {
     public Scale scale(){
 //        return new BalanceScale();
         return new BalanceScaleOnMars(); //의존성 주입 교체
-        StringUtils
 
     }
 }

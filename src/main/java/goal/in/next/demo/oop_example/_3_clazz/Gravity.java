@@ -5,7 +5,8 @@ public final class Gravity { //중력을 무엇으로 상속할까... 추상화,
     static final double GRAVITY_CONSTANT = 9.8; // 상수만 있을 뿐, 상태 없음!
     // 대상의 무게 구하기
     static double getWeight(Object object){
-        return object.mess * GRAVITY_CONSTANT;
+//        return object.mess * GRAVITY_CONSTANT;
+        return GRAVITY_CONSTANT;
     }
 
     class Apple {
