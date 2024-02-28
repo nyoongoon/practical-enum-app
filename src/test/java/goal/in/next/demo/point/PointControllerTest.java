@@ -42,6 +42,17 @@ class PointControllerTest {
     }
 
     @Test
+    public void 포인트_차감_단건_요청() throws Exception {
+        Point point = pointRepository.save(new Point(10000L));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1000L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1)) //성공
+                .andExpect(MockMvcResultMatchers.jsonPath("$.points").value(9000L)); //성공
+    }
+
+    @Test
     public void 포인트_차감_동시_요청_1() throws Exception {
         Point point = pointRepository.save(new Point(10000L));
 
@@ -51,7 +62,7 @@ class PointControllerTest {
         for (int i = 1; i <= n; i++) {
             executorService.execute(() -> {
                 try {
-                    mockMvc.perform(MockMvcRequestBuilders.get("/points/{id}/{point}", point.id, 1000L)
+                    mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1000L)
                                     .contentType(MediaType.APPLICATION_JSON))
                             .andExpect(MockMvcResultMatchers.status().isOk());
                 } catch (Exception e) {
@@ -80,7 +91,7 @@ class PointControllerTest {
         for (int i = 1; i <= n; i++) {
             executorService.execute(() -> {
                 try {
-                    mockMvc.perform(MockMvcRequestBuilders.get("/points/{id}/{point}", point.id, 1000L)
+                    mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1000L)
                                     .contentType(MediaType.APPLICATION_JSON))
                             .andExpect(MockMvcResultMatchers.status().isOk());
                 } catch (Exception e) {

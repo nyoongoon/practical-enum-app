@@ -12,7 +12,6 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @Getter
-@ToString
 public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +26,4 @@ public class Point {
     public void substractPoint(Long point){
         points -= point;
     }
-
 }

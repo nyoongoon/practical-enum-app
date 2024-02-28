@@ -14,12 +14,11 @@ public class PointController {
 
     @GetMapping("/points/{id}")
     public Point getPoints(@PathVariable Long id){
-        Point post = pointService.findPost(id);
-        return post;
+        return pointService.findPost(id);
     }
 
-    @GetMapping("/points/{id}/{point}")
-    public void subtractPoints(@PathVariable Long id, @PathVariable Long point){
-        pointService.subtractPoint(id, point);
+    @PostMapping("/points/{id}/{point}")
+    public Point subtractPoints(@PathVariable Long id, @PathVariable Long point){
+        return pointService.subtractPoint(id, point);
     }
 }
