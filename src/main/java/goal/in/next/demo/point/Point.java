@@ -12,6 +12,7 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @Getter
+@ToString
 public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
