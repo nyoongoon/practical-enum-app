@@ -31,6 +31,72 @@ class PointControllerTest {
     PointRepository pointRepository;
 
     @Test
+    public void 포인트_차감_동시_요청_5() throws Exception { // 준비, 요청, 완료 카운트다운래치로 동시 요청
+        class WaitingWorker implements Runnable {
+
+            private Point point;
+            private CountDownLatch readyThreadCounter;
+            private CountDownLatch callingThreadBlocker;
+            private CountDownLatch completedThreadCounter;
+
+            public WaitingWorker(
+                    Point point,
+                    CountDownLatch readyThreadCounter,
+                    CountDownLatch callingThreadBlocker,
+                    CountDownLatch completedThreadCounter) {
+                this.point = point;
+                this.readyThreadCounter = readyThreadCounter;
+                this.callingThreadBlocker = callingThreadBlocker;
+                this.completedThreadCounter = completedThreadCounter;
+            }
+
+            @Override
+            public void run() {
+                readyThreadCounter.countDown();
+                try {
+                    callingThreadBlocker.await(); //요청 대기
+                    mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1L)
+                                    .contentType(MediaType.APPLICATION_JSON))
+                            .andExpect(MockMvcResultMatchers.status().isOk());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    completedThreadCounter.countDown();
+                }
+            }
+        }
+
+        Point point = pointRepository.save(new Point(10000L)); // 포인트저장
+
+        int n = 2000; // 스레드 풀의 크기
+        ExecutorService executorService = Executors.newFixedThreadPool(n); // 고정된 크기의 스레드 풀 생성
+        CountDownLatch readyThreadCounter = new CountDownLatch(n); //준비 카운트
+        CountDownLatch callingThreadBlocker = new CountDownLatch(1); //요청 카운트
+        CountDownLatch completedThreadCounter = new CountDownLatch(n); //완료 카운트
+        // 동시에 실행될 작업 정의
+        Runnable task = new WaitingWorker(
+                point, readyThreadCounter, callingThreadBlocker, completedThreadCounter);
+
+        // n개의 작업을 스레드 풀에 제출  --> 작업과 실행의 분리!
+        System.out.println("n개의 작업을 스레드 풀에 제출");
+        for (int i = 0; i < n; i++) {
+            executorService.submit(task); // 실행
+        }
+
+        readyThreadCounter.await(); // 모든 작업 준비 될 때까지 대기
+        callingThreadBlocker.countDown(); // 준비 완료 시 요청 count 0으로 호출 -> 요청 동시에 n개 호출
+        completedThreadCounter.await(); // 모든 작업 완료 될 때까지 대기
+        System.out.println("모든 작업 완료");
+        System.out.println("====================");
+        Point after = pointRepository.findById(point.getId()).orElseThrow();
+        System.out.println(after);
+        assertThat(8000L).isEqualTo(after.getPoints());
+    }
+
+
+    @Test
     public void 포인트_조회_요청() throws Exception {
         Point point = pointRepository.save(new Point(10000L));
 
@@ -51,42 +117,48 @@ class PointControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1)) //성공
                 .andExpect(MockMvcResultMatchers.jsonPath("$.points").value(9000L)); //성공
-    }
-
-    @Test
-    public void 포인트_차감_순차_요청_1() throws Exception {
-        Point point = pointRepository.save(new Point(10000L));
-
-        int n = 3;
-        ExecutorService executorService = Executors.newFixedThreadPool(n);
-        CountDownLatch countDownLatch = new CountDownLatch(n);
-        for (int i = 1; i <= n; i++) {
-            executorService.execute(() -> {
-                try {
-                    mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1000L)
-                                    .contentType(MediaType.APPLICATION_JSON))
-                            .andExpect(MockMvcResultMatchers.status().isOk());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    throw new RuntimeException("예외 발생");
-                } finally {
-                    countDownLatch.countDown();
-                }
-            });
-            Thread.sleep(1000);
-        }
-        countDownLatch.await(); // 요청 동시 요청
-        System.out.println(point);
 
         System.out.println("==========");
         System.out.println(pointRepository.findById(point.getId()));
     }
 
     @Test
+    void 스레드풀_사용한_동시요청() throws InterruptedException {
+        int n = 2000;
+        ExecutorService executorService = Executors.newFixedThreadPool(n);
+        Point point = pointRepository.save(new Point(10000L));
+
+
+        for (int i = 1; i <= n; i++) {
+            executorService.execute(() -> {
+                try {
+                    mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1000L)
+                                    .contentType(MediaType.APPLICATION_JSON))
+                            .andExpect(MockMvcResultMatchers.status().isOk())
+                            .andDo(MockMvcResultHandlers.print());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    throw new RuntimeException("예외 발생");
+                }
+            });
+        }
+        // 작업이 모두 완료될 때까지 대기
+        executorService.shutdown();
+        while (!executorService.isTerminated()) {
+            // 기다림
+        }
+
+        System.out.println("모든 작업이 완료되었습니다.");
+        System.out.println("====================");
+        System.out.println(pointRepository.findById(point.getId()).orElseThrow());
+    }
+
+
+    @Test
     public void 포인트_차감_동시_요청_1() throws Exception {
         Point point = pointRepository.save(new Point(10000L));
 
-        int n = 50;
+        int n = 2000;
         ExecutorService executorService = Executors.newFixedThreadPool(n); // 고정된 크기의 스레드풀 생성
         CountDownLatch countDownLatch = new CountDownLatch(n); //동시에 여러 스레드가 작업을 완료할 때까지 기다릴 수 있는 수
         for (int i = 1; i <= n; i++) {
@@ -104,35 +176,28 @@ class PointControllerTest {
             });
         }
 //      스레드가 중단되지 않는 한 래치가 0으로 카운트다운될 때까지 현재 스레드가 대기
-//      현재 래치의 개수가 0이면 메서드 즉시 반환
-        countDownLatch.await(); // 요청 동시 요청 // 해당 코드 없으면 스레드 멈춤
+//      현재 래치의 개수가 0이면 메서드 즉시 종료
+        countDownLatch.await(); // 요청 동시 요청
 
         System.out.println("====================");
         System.out.println(pointRepository.findById(point.getId()).orElseThrow());
     }
 
-    @Test
-    public void test1(){
-
-    }
-
 
     @Test
-    public void 포인트_차감_동시_요청_2() throws Exception { // ExecutorService, CountDownLatch 기능 분석...
+    public void 포인트_차감_동시_요청_2() throws Exception { // Executor를 통한 작업과 실행 분리 적용
         Point point = pointRepository.save(new Point(10000L));
 
-        int n = 50; // 스레드 풀의 크기
+        int n = 2000; // 스레드 풀의 크기
         ExecutorService executorService = Executors.newFixedThreadPool(n); // 고정된 크기의 스레드 풀 생성
         CountDownLatch countDownLatch = new CountDownLatch(n); // CountDownLatch 생성
 
         // 동시에 실행될 작업 정의
         Runnable task = () -> {
             try {
-                System.out.println("작업 시작");
                 mockMvc.perform(MockMvcRequestBuilders.post("/points/{id}/{point}", point.id, 1000L)
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(MockMvcResultMatchers.status().isOk());
-                System.out.println("작업 완료");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -140,147 +205,18 @@ class PointControllerTest {
             }
         };
 
-        // n개의 작업을 스레드 풀에 제출
+        // n개의 작업을 스레드 풀에 제출  --> 작업과 실행의 분리!
         System.out.println("n개의 작업을 스레드 풀에 제출");
         for (int i = 0; i < n; i++) {
-            executorService.submit(task);
+            executorService.submit(task); // 실행
         }
 
         // 모든 작업이 완료될 때까지 기다림
-        try {
-            System.out.println("현재 스레드 대기...");
-            countDownLatch.await(); // countDownLatch가 0이 될 때까지 기다림
-            System.out.println("모든 작업 완료");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // 스레드 풀 종료
-        executorService.shutdown();
-
+        System.out.println("현재 스레드 대기...");
+        countDownLatch.await(); // countDownLatch가 0이 될 때까지 기다림
+        System.out.println("모든 작업 완료");
 
         System.out.println("====================");
         System.out.println(pointRepository.findById(point.getId()).orElseThrow());
     }
-
-    @Test
-    public void 포인트_차감_동시_요청_3()
-            throws InterruptedException {
-
-        List<String> outputScraper = Collections.synchronizedList(new ArrayList<>());
-        CountDownLatch countDownLatch = new CountDownLatch(5);
-        List<Thread> workers = Stream
-                .generate(() -> new Thread(new Worker(outputScraper, countDownLatch)))
-                .limit(5)
-                .toList();
-
-        workers.forEach(Thread::start);
-        countDownLatch.await();
-        outputScraper.add("Latch released");
-
-        assertThat(outputScraper)
-                .containsExactly(
-                        "Counted down",
-                        "Counted down",
-                        "Counted down",
-                        "Counted down",
-                        "Counted down",
-                        "Latch released"
-                );
-    }
-
-    @Test
-    public void 포인트_차감_동시_요청_4()
-            throws InterruptedException {
-
-        List<String> outputScraper = Collections.synchronizedList(new ArrayList<>());
-        CountDownLatch readyThreadCounter = new CountDownLatch(5);
-        CountDownLatch callingThreadBlocker = new CountDownLatch(1);
-        CountDownLatch completedThreadCounter = new CountDownLatch(5);
-        List<Thread> workers = Stream
-                .generate(() -> new Thread(new WaitingWorker(
-                        outputScraper, readyThreadCounter, callingThreadBlocker, completedThreadCounter)))
-                .limit(5)
-                .toList();
-
-        workers.forEach(Thread::start);
-        readyThreadCounter.await();
-        outputScraper.add("Workers ready");
-        callingThreadBlocker.countDown();
-        completedThreadCounter.await();
-        outputScraper.add("Workers complete");
-
-        assertThat(outputScraper)
-                .containsExactly(
-                        "Workers ready",
-                        "Counted down",
-                        "Counted down",
-                        "Counted down",
-                        "Counted down",
-                        "Counted down",
-                        "Workers complete"
-                );
-    }
-
-    public class Worker implements Runnable {
-        private List<String> outputScraper;
-        private CountDownLatch countDownLatch;
-
-        public Worker(List<String> outputScraper, CountDownLatch countDownLatch) {
-            this.outputScraper = outputScraper;
-            this.countDownLatch = countDownLatch;
-        }
-
-        @Override
-        public void run() {
-//                doSomeWork();
-            outputScraper.add("Counted down");
-            countDownLatch.countDown();
-        }
-    }
-
-    public class WaitingWorker implements Runnable {
-
-        private List<String> outputScraper;
-        private CountDownLatch readyThreadCounter;
-        private CountDownLatch callingThreadBlocker;
-        private CountDownLatch completedThreadCounter;
-
-        public WaitingWorker(
-                List<String> outputScraper,
-                CountDownLatch readyThreadCounter,
-                CountDownLatch callingThreadBlocker,
-                CountDownLatch completedThreadCounter) {
-
-            this.outputScraper = outputScraper;
-            this.readyThreadCounter = readyThreadCounter;
-            this.callingThreadBlocker = callingThreadBlocker;
-            this.completedThreadCounter = completedThreadCounter;
-        }
-
-        @Override
-        public void run() {
-            readyThreadCounter.countDown();
-            try {
-                callingThreadBlocker.await();
-//                doSomeWork();
-                outputScraper.add("Counted down");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                completedThreadCounter.countDown();
-            }
-        }
-    }
-
-    @Test
-    public void 스레드_객체_테스트(){
-        SubstractRequestThread thread1 = new SubstractRequestThread();
-        thread1.start(); // 스레드1 병렬 실행
-
-        SubstractRequest substractRequest = new SubstractRequest();
-        Thread thread2 = new Thread(substractRequest);
-        thread2.start();; // 스레드2 병렬 실행
-
-
-    }
+}
