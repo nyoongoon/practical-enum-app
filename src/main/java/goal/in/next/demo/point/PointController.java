@@ -22,6 +22,6 @@ public class PointController {
     @PostMapping("/points/{id}/{point}")
     public void subtractPoints(@PathVariable Long id, @PathVariable Long point){
         log.info("PointController.subtractPoints()");
-//        pointService.subtractPoint(id, point);
+        pointService.subtractPoint(id, point);
     }
 }

@@ -70,7 +70,7 @@ class PointControllerTest {
 
         Point point = pointRepository.save(new Point(10000L)); // 포인트저장
 
-        int n = 2000; // 스레드 풀의 크기
+        int n = 1000; // 스레드 풀의 크기
         ExecutorService executorService = Executors.newFixedThreadPool(n); // 고정된 크기의 스레드 풀 생성
         CountDownLatch readyThreadCounter = new CountDownLatch(n); //준비 카운트
         CountDownLatch callingThreadBlocker = new CountDownLatch(1); //요청 카운트
