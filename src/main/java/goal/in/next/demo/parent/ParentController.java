@@ -1,7 +1,8 @@
-package goal.in.next.demo.controller;
+package goal.in.next.demo.parent;
 
-import goal.in.next.demo.service.ParentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,5 +14,13 @@ public class ParentController {
     @PostMapping("/text")
     public void insertPost() {
         parentService.example();
+    }
+
+
+    @PostMapping("/insert")
+    public ResponseEntity<ParentResponse> insert() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(parentService.insertExample());
     }
 }

@@ -1,4 +1,4 @@
-package goal.in.next.demo.entity;
+package goal.in.next.demo.parent;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,9 +13,18 @@ public class Child {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
 //    @JoinColumn(name = "parent_id", insertable = false, updatable = false)
     private Parent parent;
 
+    public void setParent(Parent parent) {
+        if (this.parent != null) {
+            this.parent.getChildren().remove(this);
+        }
+        this.parent = parent;
+        parent.getChildren().add(this);
+    }
 }

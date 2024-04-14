@@ -1,14 +1,16 @@
-package goal.in.next.demo.service;
+package goal.in.next.demo.parent;
 
-import goal.in.next.demo.entity.Child;
-import goal.in.next.demo.entity.Parent;
-import goal.in.next.demo.oop_example._1_interfaces.Diving;
+import goal.in.next.demo.parent.Child;
+import goal.in.next.demo.parent.Parent;
 import goal.in.next.demo.oop_example._2_abtracts.Mammal;
 import goal.in.next.demo.oop_example._3_clazz.Dog;
 import goal.in.next.demo.oop_example._1_interfaces.Eating;
 import goal.in.next.demo.oop_example._3_clazz.GoldenFish;
-import goal.in.next.demo.repository.ChildRepository;
-import goal.in.next.demo.repository.ParentRepository;
+import goal.in.next.demo.parent.ChildRepository;
+import goal.in.next.demo.parent.ParentRepository;
+import goal.in.next.demo.service.AbsUitilsChild;
+import goal.in.next.demo.service.AbsUtils;
+import goal.in.next.demo.service.StringUtilsChild;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -22,24 +24,18 @@ public class ParentService {
     private final AbsUtils absUitilsChild;
 
     @Transactional
-    public void insertParent() {
-
+    public ParentResponse insertExample() {
         Parent parent = new Parent();
+        parent.setName("부모입니다.");
         parentRepository.save(parent);
 
         Child child = new Child();
-//        child.setParent(parent);
-        Child save = childRepository.save(child);
-        //select문 나가지 않았는데, 새로운 instance로 parent 생성 --> 1차 캐시로 조회한듯?
-//        Parent parent2 = save.getParent();
+        child.setName("자식입니다.");
 
-        //select 안나감
-//        List<Child> children = parent.getChildren();
-//        int size = children.size();
-        //select 안나감 -> 1차캐시?
-        Parent parent1 = parentRepository.findById(parent.getId()).orElseThrow();
-//        List<Child> children1 = parent1.getChildren();
-//
+        child.setParent(parent);
+//        childRepository.save(child);
+
+        return new ParentResponse(parent.getId(), child.getId());
     }
 
     @Transactional

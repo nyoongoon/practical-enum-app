@@ -1,4 +1,4 @@
-package goal.in.next.demo.entity;
+package goal.in.next.demo.parent;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +19,6 @@ public class Parent {
 
     private String name;
 
-//    @OneToMany(mappedBy = "parent")
-//    private List<Child> children = new ArrayList<>();
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Child> children = new ArrayList<>();
 }

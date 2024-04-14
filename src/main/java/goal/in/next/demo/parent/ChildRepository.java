@@ -1,6 +1,5 @@
-package goal.in.next.demo.repository;
+package goal.in.next.demo.parent;
 
-import goal.in.next.demo.entity.Child;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChildRepository extends JpaRepository<Child, Long> {
