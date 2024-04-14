@@ -42,5 +42,10 @@ class ParentServiceTest {
         assertThat(1L).isEqualTo(childRepository.count());
         Child child = childRepository.findAll().get(0);
         Assertions.assertEquals("자식입니다.", child.getName());
+
+        //연관관계로 조회 -> 트랜잭션으로 묶여야함
+        Assertions.assertEquals("자식입니다.", parent.getChildren().get(0).getName());
+
+        //하지만 response에 childId는 찍히지 않음 -> 플러시 되고 나서 id가 생기기 떄문..
     }
 }

@@ -19,6 +19,7 @@ public class Parent {
 
     private String name;
 
+    //부모엔티티에만 케이케이스 설정
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Child> children = new ArrayList<>();
 }

@@ -27,7 +27,7 @@ public class ParentService {
     public ParentResponse insertExample() {
         Parent parent = new Parent();
         parent.setName("부모입니다.");
-        parentRepository.save(parent);
+        parentRepository.save(parent); // 부모 먼저 insert해도 상관 없음
 
         Child child = new Child();
         child.setName("자식입니다.");
@@ -35,6 +35,7 @@ public class ParentService {
         child.setParent(parent);
 //        childRepository.save(child);
 
+//        parentRepository.save(parent); // 부모 나중에 insert해도 상관 없음
         return new ParentResponse(parent.getId(), child.getId());
     }
 
