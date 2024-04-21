@@ -1,4 +1,4 @@
-package goal.in.next.demo.entity;
+package goal.in.next.demo._employee;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,13 +30,6 @@ public class Employee {
         this.name = name;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
-    List<EmployeeDetail> employeeDetailList = new ArrayList<>();
-
-
-
-    // Getters and Setters
-
-    // Other constructors and methods if needed
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.PERSIST)
+    List<EmployeeDetail> employeeDetails = new ArrayList<>();
 }

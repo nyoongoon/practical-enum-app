@@ -1,8 +1,8 @@
-package goal.in.next.demo.parent;
+package goal.in.next.demo._parent;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "parent")
 @Getter
-@Setter
+@NoArgsConstructor
 public class Parent {
 
     @Id
@@ -19,7 +19,10 @@ public class Parent {
 
     private String name;
 
-    //부모엔티티에만 케이케이스 설정
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Child> children = new ArrayList<>();
+
+    public Parent(String name) {
+        this.name = name;
+    }
 }

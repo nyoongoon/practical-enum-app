@@ -1,4 +1,4 @@
-package goal.in.next.demo.parent;
+package goal.in.next.demo._parent;
 
 import lombok.*;
 

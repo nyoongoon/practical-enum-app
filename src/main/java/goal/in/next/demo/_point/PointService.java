@@ -1,4 +1,4 @@
-package goal.in.next.demo.point;
+package goal.in.next.demo._point;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;

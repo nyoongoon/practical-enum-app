@@ -1,7 +1,7 @@
-package goal.in.next.demo.repository;
+package goal.in.next.demo._employee;
 
-import goal.in.next.demo.entity.EmployeeDetail;
-import goal.in.next.demo.entity.EmployeeDetailId;
+import goal.in.next.demo._employee.EmployeeDetail;
+import goal.in.next.demo._employee.EmployeeDetailId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

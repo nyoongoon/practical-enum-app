@@ -1,4 +1,4 @@
-package goal.in.next.demo.entity;
+package goal.in.next.demo._employee;
 
 
 import jakarta.persistence.Column;
@@ -16,8 +16,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDetailId implements Serializable {
-    @Column(name = "employee_detail_seq")
-    private Long employeeDetailSeq;
+    @Column(name = "employee_no")
+    private Long employeeNo;
 
     @Column(name = "nick_name")
     private String nickName;

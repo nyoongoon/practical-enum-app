@@ -1,7 +1,7 @@
 package goal.in.next.demo.controller;
 
 import goal.in.next.demo.dto.EmployeeDto;
-import goal.in.next.demo.service.EmployeeService;
+import goal.in.next.demo._employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

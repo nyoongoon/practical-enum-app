@@ -1,13 +1,14 @@
-package goal.in.next.demo.repository;
+package goal.in.next.demo._employee;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import goal.in.next.demo.entity.Employee;
+import goal.in.next.demo._employee.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static goal.in.next.demo.entity.QEmployee.employee;
+import static goal.in.next.demo._employee.QEmployee.employee;
+
 
 @Repository
 @RequiredArgsConstructor

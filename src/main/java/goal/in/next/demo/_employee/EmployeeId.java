@@ -1,4 +1,4 @@
-package goal.in.next.demo.entity;
+package goal.in.next.demo._employee;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
