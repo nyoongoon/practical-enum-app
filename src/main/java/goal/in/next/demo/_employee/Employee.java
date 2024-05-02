@@ -10,11 +10,10 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "employee")
 @Getter
+@Table(name = "employee")
 @NoArgsConstructor
 @IdClass(EmployeeId.class)
-@Setter
 public class Employee {
 
     @Id

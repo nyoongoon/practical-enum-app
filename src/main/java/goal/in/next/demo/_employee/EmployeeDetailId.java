@@ -16,12 +16,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDetailId implements Serializable {
-    @Column(name = "employee_no")
-    private Long employeeNo;
 
     @Column(name = "nick_name")
     private String nickName;
 
     @Column(name="name")
     private String name;
+
+    @Column(name = "email")
+    private String email;
 }

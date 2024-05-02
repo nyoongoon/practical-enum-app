@@ -1,10 +1,9 @@
 package goal.in.next.demo._point;
 
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -16,11 +15,11 @@ public class PointService {
         return pointRepository.findById(id).orElseThrow();
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void subtractPoint(Long id, Long point){
-        Point post = findPost(id);
-        if(post.getPoints() - point >= 0){ //차감결과가 0 이상인 경우
-            post.substractPoint(point);
+    @Transactional
+    public void subtractPoint(Long id, Long score) {
+        Point point = pointRepository.findById(id).orElseThrow();
+        if (point.getPoints() - score >= 0) { //차감결과가 0 이상인 경우
+            point.substractPoint(score);
         }
         log.info("PointService.subtractPoint()");
     }
